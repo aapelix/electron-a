@@ -1,9 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
 
-import { Client } from "minecraft-launcher-core";
-const launcher = new Client();
-import { Auth } from "msmc";
+import { autoUpdater, AppUpdater } from 'electron-updater'
 
 // The built directory structure
 //
@@ -17,6 +15,8 @@ import { Auth } from "msmc";
 process.env.DIST = path.join(__dirname, '../dist')
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
 
+autoUpdater.autoDownload = true
+autoUpdater.autoInstallOnAppQuit = true
 
 let win: BrowserWindow | null
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
@@ -50,6 +50,8 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(process.env.DIST, 'index.html'))
   }
+
+  autoUpdater.checkForUpdates();
 }
 
 app.on('window-all-closed', () => {

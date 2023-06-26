@@ -8,6 +8,11 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "repository": "https://github.com/aapelix/electron-a",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
   "dependencies": {
     "electron-updater": "^6.1.1",
     "minecraft-launcher-core": "^3.17.1",
