@@ -25,7 +25,7 @@ function PlayButton() {
             fill="white"
           />
         </svg>
-        PLAY
+        PLAYS
       </button>
     </div>
   );
