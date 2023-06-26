@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
 
-import { autoUpdater, AppUpdater } from 'electron-updater'
+import { autoUpdater } from 'electron-updater'
 
 // The built directory structure
 //
