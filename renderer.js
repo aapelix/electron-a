@@ -1,16 +1,11 @@
 const minimize = document.getElementById("titlebar-minimize");
-const close = document.getElementById("titlebar-close");
-const amogus = document.getElementById("amogus");
+const closeBtn = document.getElementById("titlebar-close");
 
 minimize.addEventListener("click", () => {
     window.electronAPI.minimize();
 });
 
-close.addEventListener("click", () => {
+closeBtn.addEventListener("click", () => {
     window.electronAPI.close();
-});
-
-amogus.addEventListener("click", () => {
-    window.electronAPI.launchMc();
 });
 

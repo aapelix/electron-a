@@ -1,5 +1,15 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
+const fs = require('fs');
+const rimraf = require("rimraf");
+const Store = require('electron-store');
+const { Client } = require("minecraft-launcher-core");
+const launcher = new Client();
+
+const { Auth } = require("msmc");
+
+
+const store = new Store();
 
 import { autoUpdater } from 'electron-updater'
 
@@ -64,6 +74,75 @@ ipcMain.on("close", () => {
 
 ipcMain.on("minimize", () => {
   win?.minimize();
+})
+
+ipcMain.handle("loopInstances", () => {
+  const folderPath = path.resolve(__dirname, "../instances")
+
+  const folderContent = fs.readdirSync(folderPath)
+  const folders = folderContent.filter((res: string) => fs.lstatSync(path.resolve(folderPath, res)).isDirectory())
+
+  return folders;
+})
+
+ipcMain.handle("launchMc", (_, version) => {
+
+  const authManager = new Auth("select_account");
+
+    authManager.launch("raw").then(async (xboxManager: { getMinecraft: () => any; }) => {
+
+      const token = await xboxManager.getMinecraft();
+      
+      let opts = {
+          clientPackage: null,
+      
+          authorization: token.mclc(),
+          root: "./instances/" + version,
+          version: {
+              number: version,
+              type: "release"
+          },
+          memory: {
+              max: "6G",
+              min: "4G"
+          }
+      };
+      console.log("Starting!");
+      launcher.launch(opts);
+    
+      launcher.on('debug', (e: any) => console.log(e));
+      launcher.on('data', (e: any) => console.log(e));
+    });
+})
+
+ipcMain.handle("deleteInstance", (_, version) => {
+  rimraf(path.join(__dirname, "../instances/" + version), function() { console.log("done"); });
+});
+
+ipcMain.on("createInstance", (name, version) => {
+  if (store.get("firsti") == undefined) {
+    store.set("firsti", true)
+    localStorage.setItem("firstinstance", "true")
+    fs.mkdir(path.join(__dirname, "../instances"), (err: any) => {
+      if (err) {
+        return console.error(err);
+      }
+      fs.mkdir(path.join(__dirname, "../instances/" + version), (err: any) => {
+      if (err) {
+        return console.error(err);
+      }
+      console.log("Directory created successfully!");
+      });
+    });
+    
+  } else {
+    fs.mkdir(path.join(__dirname, "../instances/" + version), (err: any) => {
+      if (err) {
+        return console.error(err);
+      }
+      console.log("Directory created successfully!");
+  });
+}
 })
 
 app.whenReady().then(createWindow)

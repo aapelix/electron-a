@@ -45,6 +45,15 @@ body {
   top: 0;
   left: 0;
   right: 0;
+  z-index: 10;
+}
+
+.titlebar p {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  z-index: 1;
+  color: white;
 }
 
 .drag {

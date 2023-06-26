@@ -32,7 +32,7 @@ function Mods() {
       <input
         type="text"
         placeholder="Search..."
-        className="m-2 p-5 text-xl rounded-lg bg-secondary text-white focus:outline-none"
+        className="m-2 p-5 text-xl rounded-lg bg-secondary text-white focus:outline-none mt-5"
         onChange={(e) => {
           query = e.target.value;
           search();

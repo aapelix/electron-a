@@ -1,43 +1,16 @@
 const { contextBridge, ipcRenderer} = require("electron");
-
-const { Client } = require("minecraft-launcher-core");
-const launcher = new Client();
-
-const { Auth } = require("msmc");
-
-
+var fs = require('fs');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   close: () => ipcRenderer.send("close"),
   minimize: () => ipcRenderer.send("minimize"),
-  launchMc: () => {
-    const authManager = new Auth("select_account");
-
-    authManager.launch("raw").then(async (xboxManager: { getMinecraft: () => any; }) => {
-
-      const token = await xboxManager.getMinecraft();
-      
-      let opts = {
-          clientPackage: null,
-      
-          authorization: token.mclc(),
-          root: "./.minecraft",
-          version: {
-              number: "1.18.2",
-              type: "release"
-          },
-          memory: {
-              max: "6G",
-              min: "4G"
-          }
-      };
-      console.log("Starting!");
-      launcher.launch(opts);
-    
-      launcher.on('debug', (e: any) => console.log(e));
-      launcher.on('data', (e: any) => console.log(e));
-    });
-  }
+  //@ts-ignore
+  launchMc: (_: any, version: string) => ipcRenderer.invoke("launchMc", (_, version)),
+  //@ts-ignore
+  deleteInstance: (_: any, name: string) => ipcRenderer.invoke("deleteInstance", (_, name)),
+  //@ts-ignore
+  createInstance: (name: string, version: string) => ipcRenderer.send("createInstance", (name, version)),
+  loopInstances: () => ipcRenderer.invoke("loopInstances"),
 })
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
