@@ -3,8 +3,16 @@ import Select from "react-select";
 
 const versions = [
   { value: "1.18.2", label: "1.18.2" },
+  { value: "1.18.1", label: "1.18.1" },
+  { value: "1.18", label: "1.18" },
   { value: "1.17.1", label: "1.17.1" },
+  { value: "1.17", label: "1.17" },
   { value: "1.16.5", label: "1.16.5" },
+  { value: "1.16.4", label: "1.16.4" },
+  { value: "1.16.3", label: "1.16.3" },
+  { value: "1.16.2", label: "1.16.2" },
+  { value: "1.16.1", label: "1.16.1" },
+  { value: "1.16", label: "1.16" },
   { value: "1.15.2", label: "1.15.2" },
   { value: "1.14.4", label: "1.14.4" },
   { value: "1.13.2", label: "1.13.2" },
@@ -37,6 +45,10 @@ function Instances() {
     loopInstances();
   }, []);
 
+  setTimeout(() => {
+    loopInstances();
+  }, 7000);
+
   const launchMc = (version: string) => {
     console.log("Launching Minecraft");
     //@ts-ignore
@@ -68,7 +80,7 @@ function Instances() {
         </button>
       </div>
       {visible && (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary h-96 w-96 flex justify-center text-center text-white rounded-lg">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary h-96 w-96 flex justify-center text-center text-white rounded-lg z-10 shadow-2xl">
           <div className="mt-10">
             <input
               type="text"

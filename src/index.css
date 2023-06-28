@@ -78,7 +78,7 @@ body {
   background: #585858;
 }
 
-.titlebar-button:nth-child(2):hover {
+.titlebar-button.second:hover {
   background: #ff2e2e;
 }
 

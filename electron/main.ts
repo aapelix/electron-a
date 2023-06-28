@@ -109,6 +109,7 @@ ipcMain.handle("launchMc", (_, version) => {
       };
       console.log("Starting!");
       launcher.launch(opts);
+      win?.minimize();
     
       launcher.on('debug', (e: any) => console.log(e));
       launcher.on('data', (e: any) => console.log(e));
@@ -118,6 +119,13 @@ ipcMain.handle("launchMc", (_, version) => {
 ipcMain.handle("deleteInstance", (_, version) => {
   rimraf(path.join(__dirname, "../instances/" + version), function() { console.log("done"); });
 });
+
+ipcMain.handle("firstlaunch", () => {
+  if (store.get("firstlaunch") == undefined) {
+      store.set("firstlaunch", true);
+      return true;
+  }
+})
 
 ipcMain.on("createInstance", (name, version) => {
   if (store.get("firsti") == undefined) {

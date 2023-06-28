@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 function Home() {
   const news = [
     {
@@ -16,6 +18,14 @@ function Home() {
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     },
   ];
+
+  useEffect(() => {
+    //@ts-ignore
+    const first = window.electronAPI.firstLaunch();
+    if (first) {
+      window.location.assign("#/firstlaunch");
+    }
+  }, []);
 
   return (
     <div>

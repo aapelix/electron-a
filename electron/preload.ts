@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   //@ts-ignore
   createInstance: (name: string, version: string) => ipcRenderer.send("createInstance", (name, version)),
   loopInstances: () => ipcRenderer.invoke("loopInstances"),
+  firstLaunch: () => ipcRenderer.invoke("firstlaunch"),
 })
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
