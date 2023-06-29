@@ -21,10 +21,11 @@ function Home() {
 
   useEffect(() => {
     //@ts-ignore
-    const first = window.electronAPI.firstLaunch();
-    if (first) {
-      window.location.assign("#/firstlaunch");
-    }
+    const first = window.electronAPI.firstLaunch().then((res) => {
+      if (res) {
+        window.location.assign("#/firstlaunch");
+      }
+    });
   }, []);
 
   return (

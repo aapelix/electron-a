@@ -38,35 +38,15 @@ function FirstLaunch() {
         }}
       >
         <div className="absolute -top-56 left-1/2 -translate-x-1/2">
-          <h1 className="text-8xl">AMOGUS </h1>
-          <p className="text-xl">lets quickly setup your launcher</p>
+          <h1 className="text-6xl">Get Scammed</h1>
+          <p className="text-xl">There is nothing to setup xD</p>
           <button
             className="border-green-400 border-solid border-2 p-2 rounded-lg text-3xl hover:bg-green-400 duration-300 hover:text-black m-5"
             onClick={() => {
-              updateNum();
+              window.location.assign("#/");
             }}
           >
-            Next &#10140;
-          </button>
-        </div>
-      </div>
-
-      <div
-        className="duration-300"
-        style={{
-          transform: `translateX(${num + 300}%)`,
-        }}
-      >
-        <div className="absolute -top-56 left-1/2 -translate-x-1/2">
-          <h1 className="text-8xl">AMOGUS</h1>
-          <p className="text-xl">lets quickly setup your launcher</p>
-          <button
-            className="border-green-400 border-solid border-2 p-2 rounded-lg text-3xl hover:bg-green-400 duration-300 hover:text-black m-5"
-            onClick={() => {
-              updateNum();
-            }}
-          >
-            Next &#10140;
+            To Launcher &#10140;
           </button>
         </div>
       </div>

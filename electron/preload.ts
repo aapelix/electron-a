@@ -5,11 +5,21 @@ contextBridge.exposeInMainWorld('electronAPI', {
   close: () => ipcRenderer.send("close"),
   minimize: () => ipcRenderer.send("minimize"),
   //@ts-ignore
-  launchMc: (_: any, version: string) => ipcRenderer.invoke("launchMc", (_, version)),
+  launchMc: (_: any, name: string) => ipcRenderer.invoke("launchMc", (_, name)),
   //@ts-ignore
   deleteInstance: (_: any, name: string) => ipcRenderer.invoke("deleteInstance", (_, name)),
   //@ts-ignore
-  createInstance: (name: string, version: string) => ipcRenderer.send("createInstance", (name, version)),
+  createInstance: (_, client, name, version) => {
+    const args = 
+      {
+        "client": client,
+        "name": name,
+        "version": version
+      }
+    
+    //@ts-ignore
+    ipcRenderer.invoke("createInstance", args)
+  },
   loopInstances: () => ipcRenderer.invoke("loopInstances"),
   firstLaunch: () => ipcRenderer.invoke("firstlaunch"),
 })

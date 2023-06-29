@@ -85,8 +85,8 @@ ipcMain.handle("loopInstances", () => {
   return folders;
 })
 
-ipcMain.handle("launchMc", (_, version) => {
-
+ipcMain.handle("launchMc", (_, name) => {
+  const version = store.get(name + ".version")
   const authManager = new Auth("select_account");
 
     authManager.launch("raw").then(async (xboxManager: { getMinecraft: () => any; }) => {
@@ -97,7 +97,7 @@ ipcMain.handle("launchMc", (_, version) => {
           clientPackage: null,
       
           authorization: token.mclc(),
-          root: "./instances/" + version,
+          root: "./instances/" + name,
           version: {
               number: version,
               type: "release"
@@ -116,18 +116,28 @@ ipcMain.handle("launchMc", (_, version) => {
     });
 })
 
-ipcMain.handle("deleteInstance", (_, version) => {
-  rimraf(path.join(__dirname, "../instances/" + version), function() { console.log("done"); });
+ipcMain.handle("deleteInstance", (_, name) => {
+  rimraf(path.join(__dirname, "../instances/" + name), function() {
+    store.delete(name)
+  });
 });
 
 ipcMain.handle("firstlaunch", () => {
   if (store.get("firstlaunch") == undefined) {
       store.set("firstlaunch", true);
       return true;
+  } else {
+      return false;
   }
 })
 
-ipcMain.on("createInstance", (name, version) => {
+ipcMain.handle("createInstance", async (_, args) => {
+
+  const client = args.client;
+  const version = args.version;
+  const name = args.name;
+
+
   if (store.get("firsti") == undefined) {
     store.set("firsti", true)
     localStorage.setItem("firstinstance", "true")
@@ -135,22 +145,26 @@ ipcMain.on("createInstance", (name, version) => {
       if (err) {
         return console.error(err);
       }
-      fs.mkdir(path.join(__dirname, "../instances/" + version), (err: any) => {
-      if (err) {
-        return console.error(err);
-      }
-      console.log("Directory created successfully!");
+      fs.mkdir(path.join(__dirname, "../instances/" + name), (err: any) => {
+        if (err) {
+          return console.error(err);
+        }
+        store.set(name + ".version", version)
+        store.set(name + ".client", client)
+        console.log("Directory created successfully!");
       });
     });
     
   } else {
-    fs.mkdir(path.join(__dirname, "../instances/" + version), (err: any) => {
+    fs.mkdir(path.join(__dirname, "../instances/" + name), (err: any) => {
       if (err) {
         return console.error(err);
       }
+      store.set(name + ".version", version)
+      store.set(name + ".client", client)
       console.log("Directory created successfully!");
   });
-}
+} 
 })
 
 app.whenReady().then(createWindow)

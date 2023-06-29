@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 
 const versions = [
-  { value: "1.18.2", label: "1.18.2" },
+  { value: "1.20.1", label: "1.20.1" },
+  { value: "1.20", label: "1.20" },
+  { value: "1.19.4", label: "1.19.4" },
+  { value: "1.19.3", label: "1.19.3" },
+  { value: "1.19.2", label: "1.19.2" },
+  { value: "1.19.1", label: "1.19.1" },
+  { value: "1.19", label: "1.19" },
+  { value: "1.18.2", label: "2.18.1" },
   { value: "1.18.1", label: "1.18.1" },
   { value: "1.18", label: "1.18" },
   { value: "1.17.1", label: "1.17.1" },
@@ -14,13 +21,52 @@ const versions = [
   { value: "1.16.1", label: "1.16.1" },
   { value: "1.16", label: "1.16" },
   { value: "1.15.2", label: "1.15.2" },
+  { value: "1.15.1", label: "1.15.1" },
+  { value: "1.15", label: "1.15" },
   { value: "1.14.4", label: "1.14.4" },
+  { value: "1.14.3", label: "1.14.3" },
+  { value: "1.14.2", label: "1.14.2" },
+  { value: "1.14.1", label: "1.14.1" },
+  { value: "1.14", label: "1.14" },
   { value: "1.13.2", label: "1.13.2" },
+  { value: "1.13.1", label: "1.13.1" },
+  { value: "1.13", label: "1.13" },
   { value: "1.12.2", label: "1.12.2" },
+  { value: "1.12.1", label: "1.12.1" },
+  { value: "1.12", label: "1.12" },
   { value: "1.11.2", label: "1.11.2" },
+  { value: "1.11.1", label: "1.11.1" },
+  { value: "1.11", label: "1.11" },
   { value: "1.10.2", label: "1.10.2" },
+  { value: "1.10.1", label: "1.10.1" },
+  { value: "1.10", label: "1.10" },
   { value: "1.9.4", label: "1.9.4" },
+  { value: "1.9.3", label: "1.9.3" },
+  { value: "1.9.2", label: "1.9.2" },
+  { value: "1.9.1", label: "1.9.1" },
+  { value: "1.9", label: "1.9" },
   { value: "1.8.9", label: "1.8.9" },
+  { value: "1.8.8", label: "1.8.8" },
+  { value: "1.8.7", label: "1.8.7" },
+  { value: "1.8.6", label: "1.8.6" },
+  { value: "1.8.5", label: "1.8.5" },
+  { value: "1.8.4", label: "1.8.4" },
+  { value: "1.8.3", label: "1.8.3" },
+  { value: "1.8.2", label: "1.8.2" },
+  { value: "1.8.1", label: "1.8.1" },
+  { value: "1.8", label: "1.8" },
+  { value: "1.7.10", label: "1.7.10" },
+  { value: "1.7.9", label: "1.7.9" },
+  { value: "1.7.8", label: "1.7.8" },
+  { value: "1.7.7", label: "1.7.7" },
+  { value: "1.7.6", label: "1.7.6" },
+  { value: "1.7.5", label: "1.7.5" },
+  { value: "1.7.4", label: "1.7.4" },
+  { value: "1.7.3", label: "1.7.3" },
+  { value: "1.7.2", label: "1.7.2" },
+  { value: "1.6.4", label: "1.6.4" },
+  { value: "1.6.2", label: "1.6.2" },
+  { value: "1.6.1", label: "1.6.1" },
 ];
 
 function Instances() {
@@ -86,7 +132,9 @@ function Instances() {
               type="text"
               placeholder="Name for instance"
               className="focus:outline-none rounded-lg bg-secondary p-2 m-2"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
             <div>
               <Select
@@ -102,14 +150,19 @@ function Instances() {
               className="text-black bg-white p-2 rounded-lg"
               onClick={() => {
                 const finalversion = selectedOption?.value;
+                const finalname = name;
                 if (finalversion == undefined) return;
                 if (name == "") return;
                 else {
                   setVisible(!visible);
-                  console.log(name);
 
                   //@ts-ignore
-                  window.electronAPI.createInstance(name, finalversion);
+                  window.electronAPI.createInstance(
+                    "",
+                    "vanilla",
+                    finalname,
+                    finalversion
+                  );
                   setTimeout(() => {
                     loopInstances();
                   }, 100);
@@ -125,7 +178,10 @@ function Instances() {
       )}
       <ul className="absolute top-36 ml-1">
         {instances.map((item: any) => (
-          <li className="p-4 m-2 w-[calc(100vw-300px)] cursor-pointer bg-secondary rounded-lg">
+          <li
+            className="p-4 m-2 w-[calc(100vw-300px)] cursor-pointer bg-secondary rounded-lg"
+            key={item}
+          >
             <div className="text-white" key={item}>
               <p className="font-bold">{item}</p>
               <button
