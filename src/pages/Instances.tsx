@@ -75,9 +75,27 @@ function Instances() {
   const [name, setName] = useState("");
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const [instances, setInstances] = useState<any>([]);
+  const [client, setClient] = useState("vanilla");
+  const [launchText, setLaunchText] = useState("PLAY");
 
   const createInstance = () => {
     setVisible(!visible);
+  };
+
+  const createInstanceFunc = () => {
+    const finalversion = selectedOption?.value;
+    if (finalversion == undefined) return;
+    if (name == "") return;
+    else {
+      //@ts-ignore
+      window.electronAPI.createInstance("", client, name, finalversion);
+      setTimeout(() => {
+        loopInstances();
+      }, 100);
+      setVisible(!visible);
+      setSelectedOption(null);
+      setName("");
+    }
   };
 
   const loopInstances = () => {
@@ -96,7 +114,7 @@ function Instances() {
   }, 7000);
 
   const launchMc = (version: string) => {
-    console.log("Launching Minecraft");
+    setLaunchText("PLAYING");
     //@ts-ignore
     window.electronAPI.launchMc("", version);
   };
@@ -146,29 +164,36 @@ function Instances() {
                 className="mb-5 text-black"
               />
             </div>
+            <div>
+              <button
+                className="m-1 p-2 border-solid hover:border-green-400 mb-5 focus:scale-125 border-2 duration-300 rounded-lg "
+                onClick={() => setClient("vanilla")}
+              >
+                Vanilla
+              </button>
+              <button
+                className="m-1 p-2 border-solid hover:border-green-400 mb-5 focus:scale-125 border-2 duration-300 rounded-lg "
+                onClick={() => setClient("forge")}
+              >
+                Forge
+              </button>
+              <button
+                className="m-1 p-2 border-solid hover:border-green-400 mb-5 focus:scale-125 border-2 duration-300 rounded-lg "
+                onClick={() => setClient("fabric")}
+              >
+                Fabric
+              </button>
+              <button
+                className="m-1 p-2 border-solid hover:border-green-400 mb-5 focus:scale-125 border-2 duration-300 rounded-lg "
+                onClick={() => setClient("quilt")}
+              >
+                Quilt
+              </button>
+            </div>
             <button
               className="text-black bg-white p-2 rounded-lg"
               onClick={() => {
-                const finalversion = selectedOption?.value;
-                const finalname = name;
-                if (finalversion == undefined) return;
-                if (name == "") return;
-                else {
-                  setVisible(!visible);
-
-                  //@ts-ignore
-                  window.electronAPI.createInstance(
-                    "",
-                    "vanilla",
-                    finalname,
-                    finalversion
-                  );
-                  setTimeout(() => {
-                    loopInstances();
-                  }, 100);
-                  setSelectedOption(null);
-                  setName("");
-                }
+                createInstanceFunc();
               }}
             >
               Create
@@ -177,28 +202,32 @@ function Instances() {
         </div>
       )}
       <ul className="absolute top-36 ml-1">
-        {instances.map((item: any) => (
-          <li
-            className="p-4 m-2 w-[calc(100vw-300px)] cursor-pointer bg-secondary rounded-lg"
-            key={item}
-          >
-            <div className="text-white" key={item}>
-              <p className="font-bold">{item}</p>
-              <button
-                className="absolute right-10 border-2 p-2 rounded-lg border-green-500 -translate-y-8 hover:scale-110 duration-300"
-                onClick={() => launchMc(item)}
-              >
-                PLAY
-              </button>
-              <button
-                className="absolute right-24 mr-2 border-2 p-2 rounded-lg border-red-500 -translate-y-8 hover:scale-110 duration-300"
-                onClick={() => deleteInstance(item)}
-              >
-                DELETE
-              </button>
-            </div>
-          </li>
-        ))}
+        {instances
+          .filter((name: string | string[]) => name.includes(search))
+          .map((item: any) => (
+            <li
+              className="p-4 m-2 w-[calc(100vw-300px)] cursor-pointer bg-secondary rounded-lg"
+              key={item}
+            >
+              <div className="text-white" key={item}>
+                <p className="font-bold">{item.toUpperCase()}</p>
+                <div className="absolute right-5 -translate-y-2">
+                  <button
+                    className="border-2 p-2 rounded-lg m-2 border-red-500 -translate-y-8 hover:scale-110 duration-300"
+                    onClick={() => deleteInstance(item)}
+                  >
+                    DELETE
+                  </button>
+                  <button
+                    className="border-2 p-2 rounded-lg m-2 border-green-500 -translate-y-8 hover:scale-110 duration-300"
+                    onClick={() => launchMc(item)}
+                  >
+                    {launchText}
+                  </button>
+                </div>
+              </div>
+            </li>
+          ))}
       </ul>
     </div>
   );
