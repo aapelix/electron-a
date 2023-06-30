@@ -17,6 +17,17 @@
     <div id="root"></div>
 
     <script type="module" src="/src/main.tsx"></script>
-    <script src="src/renderer.js"></script>
+    <script>
+      const minimize = document.getElementById("titlebar-minimize");
+      const closeBtn = document.getElementById("titlebar-close");
+
+      minimize.addEventListener("click", () => {
+        window.electronAPI.minimize();
+      });
+
+      closeBtn.addEventListener("click", () => {
+        window.electronAPI.close();
+      });
+    </script>
   </body>
 </html>
