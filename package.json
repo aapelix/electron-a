@@ -16,6 +16,8 @@
   "dependencies": {
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.1",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
     "minecraft-launcher-core": "^3.17.1",
     "msmc": "^4.1.0",
     "react": "^18.2.0",
