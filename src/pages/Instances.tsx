@@ -76,7 +76,7 @@ function Instances() {
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const [instances, setInstances] = useState<any>([]);
   const [client, setClient] = useState("vanilla");
-  const [launchText, setLaunchText] = useState("PLAY");
+  const [launched, setLaunched] = useState(false);
 
   const createInstance = () => {
     setVisible(!visible);
@@ -101,7 +101,7 @@ function Instances() {
   const loopInstances = () => {
     //@ts-ignore
     const instancesRes = window.electronAPI.loopInstances().then((res) => {
-      setInstances(res);
+      if (res) setInstances(res);
     });
   };
 
@@ -114,7 +114,7 @@ function Instances() {
   }, 7000);
 
   const launchMc = (version: string) => {
-    setLaunchText("PLAYING");
+    setLaunched(true);
     //@ts-ignore
     window.electronAPI.launchMc("", version);
   };
@@ -202,32 +202,44 @@ function Instances() {
         </div>
       )}
       <ul className="absolute top-36 ml-1">
-        {instances
-          .filter((name: string | string[]) => name.includes(search))
-          .map((item: any) => (
-            <li
-              className="p-4 m-2 w-[calc(100vw-300px)] cursor-pointer bg-secondary rounded-lg"
-              key={item}
-            >
-              <div className="text-white" key={item}>
-                <p className="font-bold">{item.toUpperCase()}</p>
-                <div className="absolute right-5 -translate-y-2">
-                  <button
-                    className="border-2 p-2 rounded-lg m-2 border-red-500 -translate-y-8 hover:scale-110 duration-300"
-                    onClick={() => deleteInstance(item)}
-                  >
-                    DELETE
-                  </button>
-                  <button
-                    className="border-2 p-2 rounded-lg m-2 border-green-500 -translate-y-8 hover:scale-110 duration-300"
-                    onClick={() => launchMc(item)}
-                  >
-                    {launchText}
-                  </button>
-                </div>
-              </div>
-            </li>
-          ))}
+        {!launched && (
+          <div>
+            {instances
+              .filter((name: string | string[]) => name.includes(search))
+              .map((item: any) => (
+                <li
+                  className="p-4 m-2 w-[calc(100vw-300px)] cursor-pointer bg-secondary rounded-lg"
+                  key={item}
+                >
+                  <div className="text-white" key={item}>
+                    <p className="font-bold">{item.toUpperCase()}</p>
+                    <div className="absolute right-5 -translate-y-2">
+                      <button
+                        className="border-2 p-2 rounded-lg m-2 border-red-500 -translate-y-8 hover:scale-110 duration-300"
+                        onClick={() => deleteInstance(item)}
+                      >
+                        DELETE
+                      </button>
+                      <button
+                        className="border-2 p-2 rounded-lg m-2 border-green-500 -translate-y-8 hover:scale-110 duration-300"
+                        onClick={() => launchMc(item)}
+                      >
+                        PLAY
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+          </div>
+        )}
+        {launched && (
+          <div className="flex justify-center items-center flex-wrap">
+            <p className="text-white text-8xl text-center">Launching...</p>
+            <p className="text-white text-2xl text-center">
+              (First launch can take a moment)
+            </p>
+          </div>
+        )}
       </ul>
     </div>
   );

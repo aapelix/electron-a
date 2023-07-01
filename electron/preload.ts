@@ -22,6 +22,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   loopInstances: () => ipcRenderer.invoke("loopInstances"),
   firstLaunch: () => ipcRenderer.invoke("firstlaunch"),
+  //@ts-ignore
+  clearStorage: () => ipcRenderer.invoke("clearStorage"),
 })
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {

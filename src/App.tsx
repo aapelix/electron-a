@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Mods from "./pages/Mods";
 import Instances from "./pages/Instances";
 import FirstLaunch from "./pages/FirstLaunch";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/mods" element={<Mods />} />
           <Route path="/instances" element={<Instances />} />
           <Route path="/firstlaunch" element={<FirstLaunch />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </HashRouter>
