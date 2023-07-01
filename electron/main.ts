@@ -122,12 +122,12 @@ ipcMain.handle("launchMc", (_, name) => {
           clientPackage: null,
       
           authorization: token.mclc(),
-          root: "./instances/" + name,
+          root: path.join(__dirname, "../instances/" + name),
           version: {
               number: version,
               type: "release"
           },
-          forge: "./instances/" + name + "/forge.jar",
+          forge: path.join(__dirname, "../instances/" + name + "/forge.jar"),
           memory: {
               max: "6G",
               min: "4G"
@@ -142,7 +142,7 @@ ipcMain.handle("launchMc", (_, name) => {
           clientPackage: null,
 
           authorization: token.mclc(),
-          root: "./instances/" + name,
+          root: path.join(__dirname, "../instances/" + name),
           version: {
               number: version,
               type: "release"
@@ -161,7 +161,7 @@ ipcMain.handle("launchMc", (_, name) => {
           clientPackage: null,
 
           authorization: token.mclc(),
-          root: "./instances/" + name,
+          root: path.join(__dirname, "../instances/" + name),
           version: {
               number: version,
               type: "release"
